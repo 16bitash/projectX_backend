@@ -1,0 +1,12 @@
+{
+  "SERVER": {
+    "PORT": 5252
+  },
+  "DB": {
+    "USER": "userone",
+    "DATABASE": "dbone",
+    "PASSWORD": "passone",
+    "HOST": "localhost",
+    "DIALECT": "mysql"
+  }
+}
