@@ -124,7 +124,7 @@ const design = db.define('orders', {
         allowNull: false
     },
     designType: {
-        type: datatypes.Boolean,
+        type: datatypes.BOOLEAN,
         allowNull: false
     },
     designCatagory: {
@@ -152,3 +152,10 @@ Promise.all([
     orderDetails.sync(),
     design.sync()
 ]).then(() => console.log('Database connected!'));
+
+module.exports = exports = {
+    user,
+    order,
+    orderDetails,
+    design
+};
