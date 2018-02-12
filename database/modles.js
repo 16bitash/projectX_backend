@@ -18,6 +18,9 @@ const user = db.define('users', {
         type: datatypes.STRING,
         allowNull: false,
     },
+    profilePic: {
+        type: datatypes.STRING
+    },
     phone: {
         type: datatypes.INTEGER,
         unique: true,
@@ -27,6 +30,9 @@ const user = db.define('users', {
         type: datatypes.STRING,
         unique: true
     },
+    about: {
+        type: datatypes.TEXT
+    },
     password: {
         // Implement Hashing
         type: datatypes.STRING,
@@ -35,7 +41,11 @@ const user = db.define('users', {
     address: {
         type: datatypes.STRING
     },
-    respect: {
+    totalRespect: {
+        type: datatypes.INTEGER,
+        defaultValue: 0
+    },
+    currentRespect: {
         type: datatypes.INTEGER,
         defaultValue: 0
     },
@@ -52,6 +62,7 @@ const order = db.define('orders', {
         type: datatypes.INTEGER,
         foreignKey: true,
     },
+
     orderId: {
         type: datatypes.STRING,
         allowNull: false,
@@ -75,6 +86,17 @@ const orderDetails = db.define('orders', {
         type: datatypes.STRING,
         allowNull: false,
     },
+    size: {
+        type: datatypes.INTEGER,
+        unique: true
+    },
+    address: {
+        type: datatypes.STRING,
+        allowNull: false
+    },
+    phone: {
+        type: datatypes.INTEGER
+    },
     timeOfOrder: {
         type: datatypes.DATE,
         defaultValue: Sequelize.NOW,
@@ -93,14 +115,32 @@ const design = db.define('orders', {
         primaryKey: true,
         autoIncrement: true
     },
-    color: {
+    designOwner: {
+        type: datatypes.STRING,  // User ID
+        allowNull: false
+    },
+    designName: {
         type: datatypes.STRING,
+        allowNull: false
+    },
+    designType: {
+        type: datatypes.Boolean,
+        allowNull: false
+    },
+    designCatagory: {
+        type: datatypes.INTEGER
+    },
+    color: {
+        type: datatypes.STRING
     },
     imagesAndDetails: {
         type: datatypes.TEXT,
     },
     textAndDetails: {
         type: datatypes.TEXT,
+    },
+    NumberOfSale: {
+        type: datatypes.INTEGER
     },
 }, {
     freezeTableName: true
@@ -111,4 +151,4 @@ Promise.all([
     order.sync(),
     orderDetails.sync(),
     design.sync()
-]).then(() => console.log('Database connected!'))
+]).then(() => console.log('Database connected!'));
