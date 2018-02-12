@@ -3,12 +3,12 @@ const LocalStrategy = require('passport-local').Strategy;
 const Users = require('./database/modles').user;
 
 passport.serializeUser(function (user, done) {
-    done(null, user.username)
+    done(null, user.userId)
 });
 
-passport.deserializeUser(function (username, done) {
+passport.deserializeUser(function (userid, done) {
     Users.findOne({
-        username: username
+        userId: userid
     }).then((user) => {
         if (!user) {
             return done(new Error("no such user"))
