@@ -62,7 +62,6 @@ const order = db.define('orders', {
         type: datatypes.INTEGER,
         foreignKey: true,
     },
-
     orderId: {
         type: datatypes.STRING,
         allowNull: false,

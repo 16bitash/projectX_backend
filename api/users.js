@@ -1,58 +1,34 @@
 const route = require('express').Router();
 const Users = require('../database/modles').user;
+const DatabaseAPIClass = require('./functions').databaseAPI;
+const APIHelperFunctions = new DatabaseAPIClass(Users);
 
 route.get('/', (req, res) => {
-    getUser(req.query.userId).then(user => res.send(user));
+    APIHelperFunctions.getSpecificData('userId', req.query.userId).then(data => res.send(data));
 });
 
 route.get('/all', (req, res) => {
-    getAllUsers().then(allUsers => res.send(allUsers));
+    APIHelperFunctions.getAllData().then(allUsers => res.send(allUsers));
 });
 
 route.post('/', (req, res) => {
-    addUser(req.body).then(newUser => res.send(newUser));
+    if (req.file) {
+        req.body.profilePic = req.file.filename;
+    }
+    APIHelperFunctions.addRow(req.body).then(newUser => res.send(newUser));
 });
 
 // TODO: Prevent users from changing userId
 route.put('/:userId', (req, res) => {
-    updateUser(req.params.userId, req.body).then(updatedUser => res.send(updatedUser));
+    if (req.file) {
+        req.body.profilePic = req.file.filename;
+    }
+    APIHelperFunctions.updateRow('userId', req.params.userId, req.body)
+        .then(updatedInformation => res.send(updatedInformation));
 });
 
 route.delete('/:userId', (req, res) => {
-    deleteUser(req.params.userId).then(deletedUser => res.send(deletedUser));
+    APIHelperFunctions.deleteRow('userId', req.params.userId).then(deletedUser => res.send(deletedUser));
 });
-
-function getUser(userId) {
-    return Users.findOne({where: {userId: userId}});
-}
-
-function getAllUsers() {
-    return Users.findAll();
-}
-
-function addUser(userInformation) {
-    return Users.create(userInformation);
-}
-
-function updateUserById(userId, newUserInformation) {
-    return new Promise((resolve, reject) => {
-        Users.update(newUserInformation, {where: {userId: userId}})
-            .then(() => Users.findOne({where: {userId: userId}}))
-            .then(user => resolve(user))
-            .catch(err => reject(err));
-    })
-}
-
-function deleteUserById(userId) {
-    return new Promise((resolve, reject) => {
-        let deletedUser;
-        Users.findOne({where: {userId: userId}})
-            .then(userToBeDeleted => {
-                deletedUser = userToBeDeleted;
-                return Users.destroy({where: {userId: userId}})
-            })
-            .then(() => resolve(deletedUser));
-    })
-}
 
 exports.route = route;
