@@ -1,13 +1,14 @@
 const ids = {
     facebook: {
-        clientID: 'get_your_own',
-        clientSecret: 'get_your_own',
-        callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+        clientID: '182177968942410',
+        clientSecret: '4c790f68ccbf23960ed117fb5b60a97a',
+        callbackURL: "auth/facebook/redirect"
     },
     google: {
-        clientID: 'get_your_own',
-        clientSecret: 'get_your_own',
-        callbackURL: "http://127.0.0.1:3000/auth/linkedin/callback"
+        clientID: '453550727083-koh15o7kv6b16a05vk6hknproo9kbmmb.apps.googleusercontent.com',
+        clientSecret: 'VR2dJRSQrV6fZeM4zgV2MF9_',
+        callbackURL: "/auth/google/redirect",
+        scope: ['profile','email']
     }
 };
 
