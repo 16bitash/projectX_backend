@@ -14,6 +14,14 @@ const user = db.define('users', {
         primaryKey: true,
         autoIncrement: true
     },
+    googleId: {
+        type: datatypes.STRING,
+        allowNull: true
+    },
+    fbId: {
+        type: datatypes.STRING,
+        allowNull: true
+    },
     name: {
         type: datatypes.STRING,
         allowNull: false,
@@ -31,7 +39,8 @@ const user = db.define('users', {
         unique: true
     },
     about: {
-        type: datatypes.TEXT
+        type: datatypes.TEXT,
+        allowNull: true
     },
     password: {
         // Implement Hashing

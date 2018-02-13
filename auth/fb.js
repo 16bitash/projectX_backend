@@ -8,8 +8,9 @@ passport.use(new FacebookStrategy({
         clientSecret: config.facebook.clientSecret,
         callbackURL: config.facebook.callbackURL
     },
-    () => {
+    (accessToken, refreshToken, profile, done) => {
         // passport callback function
+        console.log(profile);
     }
 ));
 
