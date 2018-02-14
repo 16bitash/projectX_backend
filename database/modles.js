@@ -22,12 +22,13 @@ const user = db.define('users', {
         type: datatypes.STRING,
         allowNull: true
     },
-    name: {
+    userName: {
         type: datatypes.STRING,
         allowNull: false,
+        unique: true
     },
     phone: {
-        type: datatypes.INTEGER,
+        type: datatypes.STRING,
         allowNull: true,
     },
     profilePic: {
@@ -154,7 +155,7 @@ const design = db.define('orders', {
 });
 
 Promise.all([
-    user.sync({alter: true}),
+    user.sync({alter: true, force: false}),
     order.sync(),
     orderDetails.sync(),
     design.sync()

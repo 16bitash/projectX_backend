@@ -1,4 +1,4 @@
-const passport = require('../passport');
+const passport = require('passport');
 const FacebookStrategy = require('passport-facebook');
 const config = require('./_config').ids;
 const User = require('../database/modles').user;
@@ -11,12 +11,13 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (userid, done) {
-    APIHelperFunctions.getSpecificData('userId', userid).then((user) => {
-        if (!user) {
-            return done(new Error("no such user"))
-        }
-        done(null, user)
-    }).catch((err) => {
+    APIHelperFunctions.getSpecificData('userId', userid)
+        .then((user) => {
+            if (!user) {
+                return done(new Error("no such user"))
+            }
+            done(null, user)
+        }).catch((err) => {
         done(err)
     })
 });
@@ -27,33 +28,34 @@ passport.use(new FacebookStrategy({
         callbackURL: config.facebook.callbackURL
     },
     (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
         // passport callback function
         let profileInfo = {};
         profileInfo.fbId = profile.id;
-        profileInfo.name = profile.displayName;
+        profileInfo.userName = profile.displayName;
         profileInfo.profilePic = profile.photos ? profile.photos[0].value : 'no pic uploaded';
         if (profile.emails !== undefined) {
             profileInfo.email = profile.emails[0].value;
         }
         // profileInfo.about = profile._json.tagline;
-        console.log("************************");
-        APIHelperFunctions.getSpecificData('googleId', profileInfo.googleId).then((currentUser) => {
-            console.log(currentUser);
-            if (currentUser) {
-                // means we already have a account linked with google
-                console.log("already linked with:" + currentUser);
-                done(null, currentUser);
-            } else {
-                // means we will now save this account
-                console.log("creating new record");
-                //we haven't saved phoneNumber and password yet
-                APIHelperFunctions.addRow(profileInfo).then((newUser) => {
-                    console.log('newUser created is: ' + newUser);
-                    done(null, newUser);
-                });
-            }
-        });
+        APIHelperFunctions.getSpecificData('fbId', profileInfo.fbId)
+            .then((currentUser) => {
+                if (currentUser) {
+                    // means we already have a account linked with google
+                    console.log('already linked with:');
+                    console.log(currentUser);
+                    done(null, currentUser);
+                } else {
+                    // means we will now save this account
+                    console.log("creating new record");
+                    //we haven't saved phoneNumber and password yet
+                    APIHelperFunctions.addRow(profileInfo)
+                        .then((newUser) => {
+                            console.log('newUser created is: ');
+                            console.log(newUser);
+                            done(null, newUser);
+                        });
+                }
+            });
 
     }
 ));

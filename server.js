@@ -5,7 +5,8 @@ const multer = require('multer');
 const cors = require('cors');
 const express = require('express');
 const session = require('express-session');
-const passport = require('./passport');
+const passport = require('passport');
+const passportLocalSetup = require('./auth/local');
 const passportGoogleSetup = require('./auth/google');
 const passportFbSetup = require('./auth/fb');
 require('./database/modles');  // To make sure database is connected

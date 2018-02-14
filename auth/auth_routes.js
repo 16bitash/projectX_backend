@@ -1,6 +1,9 @@
 const route = require('express').Router();
 const passport = require('passport');
 const config = require('./_config').ids;
+const User = require('../database/modles').user;
+const DatabaseAPIClass = require('../api/functions').databaseAPI;
+const APIHelperFunctions = new DatabaseAPIClass(User);
 
 
 route.get('/login', (req, res) => {
@@ -12,7 +15,7 @@ route.get('/logout', (req, res) => {
 });
 
 route.get('/facebook', passport.authenticate('facebook'));
-route.get('/facebook/redirect', passport.authenticate('facebook',{scope:config.facebook.scope}),
+route.get('/facebook/redirect', passport.authenticate('facebook', {scope: config.facebook.scope}),
     (req, res) => {
         res.send(req.user);
     });
@@ -29,26 +32,32 @@ route.get('/signup', (req, res) => {
 });
 
 route.post('/login', passport.authenticate('local', {
-    failureRedirect: '/login',
-    successRedirect: '/'
+    failureRedirect: '/auth/login',
+    successRedirect: '/profile',
 }));
 
+// post request to sign-up don't need passportJS
 route.post('/signup', (req, res) => {
-    let userInfo = Users.findOne({
-        where: {
-            userId: req.body.userId
-        }
-    });
-    if (userInfo.userId === req.body.userId) {
-        res.send("user already exist")
-    }
-    Users.create({
+    APIHelperFunctions.getSpecificData('userName', req.body.userName)
+        .then((currentUser) => {
+            if (currentUser.userName === req.body.userName) {
+                res.send("username already exist")
+                // disable sign-up button till username is unique
+                // create AJAX request(refresh button) from frontend to check for username uniqueness
+            }
+        });
+
+
+    userInfo = {
         email: req.body.email,
-        name: req.body.name,
+        userName: req.body.userName,
         password: req.body.password,
-    }).then((createdUser) => {
-        res.redirect('/login')
-    })
+        phone: req.body.phone
+    };
+    APIHelperFunctions.addRow(userInfo)
+        .then((createdUser) => {
+            res.redirect('/auth/login')
+        });
 });
 
 exports = module.exports = route;
