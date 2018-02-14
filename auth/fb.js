@@ -1,6 +1,6 @@
 const passport = require('../passport');
 const FacebookStrategy = require('passport-facebook');
-const config = require('./_config');
+const config = require('./_config').ids;
 const User = require('../api/users');
 
 passport.use(new FacebookStrategy({

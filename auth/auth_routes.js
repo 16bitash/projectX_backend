@@ -1,6 +1,6 @@
 const route = require('express').Router();
 const passport = require('passport');
-const config = require('./_config');
+const config = require('./_config').ids;
 
 
 route.get('/login', (req, res) => {
@@ -20,7 +20,7 @@ route.get('/facebook/redirect',
 route.get('/google', passport.authenticate('google', {scope: config.google.scope}));
 route.get('/google/redirect', passport.authenticate('google'),
     (req, res) => {
-        res.send('google redirect URI');
+        res.send('google user connected: ' + req.user);
     });
 
 

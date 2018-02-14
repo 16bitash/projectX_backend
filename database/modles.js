@@ -29,11 +29,6 @@ const user = db.define('users', {
     profilePic: {
         type: datatypes.STRING
     },
-    phone: {
-        type: datatypes.INTEGER,
-        unique: true,
-        allowNull: false
-    },
     email: {
         type: datatypes.STRING,
         unique: true
@@ -45,7 +40,7 @@ const user = db.define('users', {
     password: {
         // Implement Hashing
         type: datatypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     address: {
         type: datatypes.STRING

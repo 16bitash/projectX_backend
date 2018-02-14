@@ -1,5 +1,6 @@
 const path = require('path');
 const PORT = require('./config').SERVER.PORT;
+const CookieKey = require('./auth/_config').keys.CookieKey;
 const multer = require('multer');
 const cors = require('cors');
 const express = require('express');
@@ -55,7 +56,8 @@ app.use((req, res, next) => {
 });
 
 app.use(session({
-    secret: 'somesecretstring'
+    secret: CookieKey,
+    cookie: {maxAge: 7 * 24 * 60 * 60 * 1000}
 }));
 app.use(passport.initialize());
 app.use(passport.session());
