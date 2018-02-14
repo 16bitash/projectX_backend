@@ -7,20 +7,20 @@ route.get('/login', (req, res) => {
     res.render('login')
 });
 
-route.get('/login', (req, res) => {
+route.get('/logout', (req, res) => {
     res.send('logging out')
 });
 
 route.get('/facebook', passport.authenticate('facebook'));
-route.get('/facebook/redirect',
-    function (req, res) {
-        res.send('redirect URI');
+route.get('/facebook/redirect', passport.authenticate('facebook',{scope:config.facebook.scope}),
+    (req, res) => {
+        res.send(req.user);
     });
 
 route.get('/google', passport.authenticate('google', {scope: config.google.scope}));
 route.get('/google/redirect', passport.authenticate('google'),
     (req, res) => {
-        res.send('google user connected: ' + req.user);
+        res.send(req.user);
     });
 
 

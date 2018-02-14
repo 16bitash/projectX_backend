@@ -30,8 +30,10 @@ passport.use(new GoogleStrategy({
         let profileInfo = {};
         profileInfo.googleId = profile.id;
         profileInfo.name = profile.displayName;
-        profileInfo.profilePic = profile.photos[0].value;
-        profileInfo.email = profile.emails[0].value;
+        profileInfo.profilePic = profile.photos ? profile.photos[0].value : 'no pic uploaded';
+        if (profile.emails !== undefined) {
+            profileInfo.email = profile.emails[0].value;
+        }
         profileInfo.about = profile._json.tagline;
         console.log("************************");
         APIHelperFunctions.getSpecificData('googleId', profileInfo.googleId).then((currentUser) => {
