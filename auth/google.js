@@ -16,6 +16,7 @@ passport.use(new GoogleStrategy({
         profileInfo.googleId = profile.id;
         profileInfo.name = profile.displayName;
         profileInfo.profilePic = profile.photos[0].value;
+        console.log(userFunction.getUser(profileInfo.googleId, 'google'));
         if (userFunction.getUser(profileInfo.googleId, 'google')) {
             // means we already have a account linked with google
             console.log("this google account already linked with our database");
