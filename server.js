@@ -6,43 +6,57 @@ const PORT = require('./config').SERVER.PORT;
 require('./database/modles');  // To make sure database is connected
 require('./api/users');
 
-const app = express();
-
-const storage = multer.diskStorage(({
+const profilePicStorage = multer.diskStorage(({
     destination: './public/img/profilePics',
-    filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-    }
+    filename: nameThatBitch
 }));
 
-const upload = multer({
-    storage: storage,
+const designImageStorage = multer.diskStorage(({
+    destination: './public/img/designImages',
+    filename: nameThatBitch
+}));
+
+const uploadProfilePic = multer({
+    storage: profilePicStorage,
     // limits: {fileSize: 10},  // Unit Bytes
-    fileFilter: (req, file, cb) => checkFileType(file, cb)
+    fileFilter: checkFileType
 }).single('profilePic');
 
-const routes = {
-    users: require('./api/users').route
-};
+const uploadDesignImage = multer({
+    storage: designImageStorage,
+    // limits: {fileSize: 10},  // Unit Bytes
+    fileFilter: checkFileType
+}).array('designImage');
 
-function checkFileType(file, cb) {
+function nameThatBitch(req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+}
+
+function checkFileType(req, file, cb) {
     const allowedFileTypes = /jpeg|jpg|png|gif/i;
-    const isextentionValid = allowedFileTypes.test(path.extname(file.originalname));
+    const isExtensionValid = allowedFileTypes.test(path.extname(file.originalname));
     const isMimeValid = allowedFileTypes.test(file.mimetype);
-    if (isextentionValid && isMimeValid) {
+    if (isExtensionValid && isMimeValid) {
         cb(null, true);
     } else {
         cb('Err: Image Only', false);
     }
 }
 
+const routes = {
+    users: require('./api/users').route,
+    designs: require('./api/design').route
+};
+
+const app = express();
+
 app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use((req, res, next) => {
-    upload(req, res, err => {
+app.use('/users', (req, res, next) => {
+    uploadProfilePic(req, res, err => {
         if (err) {
             console.log(err);
         }
@@ -50,7 +64,27 @@ app.use((req, res, next) => {
     });
 });
 
+app.use('/designs', (req, res, next) => {
+    uploadDesignImage(req, res, err => {
+        if (err) {
+            console.log(err);
+        }
+        next();
+    });
+});
+
+app.use((req, res, next) => {
+    // Make sure there is no key with empty value
+    Object.keys(req.body).forEach(element => {
+        if (req.body[element] === '') {
+            delete req.body[element];
+        }
+    });
+    next();
+});
+
 app.use('/users', routes.users);
+app.use('/designs', routes.designs);
 
 app.listen(PORT, () => {
     console.log(`Yo dawg! Server's at http://localhost:${PORT}`);

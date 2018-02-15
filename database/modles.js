@@ -22,7 +22,7 @@ const user = db.define('users', {
         type: datatypes.STRING
     },
     phone: {
-        type: datatypes.INTEGER,
+        type: datatypes.BIGINT,
         unique: true,
         allowNull: false
     },
@@ -146,10 +146,10 @@ const design = db.define('orders', {
 });
 
 Promise.all([
-    user.sync(),
-    order.sync(),
-    orderDetails.sync(),
-    design.sync()
+    user.sync({alter: true}),
+    order.sync({alter: true}),
+    orderDetails.sync({alter: true}),
+    design.sync({alter: true})
 ]).then(() => console.log('Database connected!'));
 
 module.exports = exports = {
