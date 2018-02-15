@@ -155,7 +155,7 @@ const design = db.define('orders', {
 });
 
 Promise.all([
-    user.sync({alter: true, force: false}),
+    user.sync({alter: false, force: false}),
     order.sync(),
     orderDetails.sync(),
     design.sync()

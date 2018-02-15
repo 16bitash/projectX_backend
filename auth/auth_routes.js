@@ -11,19 +11,22 @@ route.get('/login', (req, res) => {
 });
 
 route.get('/logout', (req, res) => {
-    res.send('logging out')
+    req.logout();
+    res.redirect('/auth/login')
 });
 
 route.get('/facebook', passport.authenticate('facebook'));
 route.get('/facebook/redirect', passport.authenticate('facebook', {scope: config.facebook.scope}),
     (req, res) => {
-        res.send(req.user);
+        // res.send(req.user);
+        res.redirect('/profile')
     });
 
 route.get('/google', passport.authenticate('google', {scope: config.google.scope}));
 route.get('/google/redirect', passport.authenticate('google'),
     (req, res) => {
-        res.send(req.user);
+        // res.send(req.user);
+        res.redirect('/profile')
     });
 
 

@@ -28,7 +28,8 @@ const upload = multer({
 }).single('profilePic');
 
 const routes = {
-    users: require('./api/users').route
+    users: require('./api/users').route,
+    profile: require('./api/profile')
 };
 
 function checkFileType(file, cb) {
@@ -66,6 +67,7 @@ app.use(passport.session());
 app.set("view engine", "hbs");
 
 app.use('/auth', require('./auth/auth_routes'));
+app.use('/profile', routes.profile);
 app.use('/users', routes.users);
 
 app.listen(PORT, () => {
