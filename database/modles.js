@@ -59,8 +59,7 @@ const user = db.define('users', {
 
 const order = db.define('orders', {
     userId: {
-        type: datatypes.INTEGER,
-        foreignKey: true,
+        type: datatypes.INTEGER
     },
     orderId: {
         type: datatypes.STRING,
@@ -76,7 +75,7 @@ const order = db.define('orders', {
 });
 
 
-const orderDetails = db.define('orders', {
+const orderDetails = db.define('orderDetails', {
     userId: {
         type: datatypes.INTEGER,
         allowNull: false,
@@ -108,23 +107,23 @@ const orderDetails = db.define('orders', {
     freezeTableName: true
 });
 
-const design = db.define('orders', {
+const design = db.define('design', {
     designId: {
         type: datatypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+        // primaryKey: true,
+        // autoIncrement: true
     },
     designOwner: {
         type: datatypes.STRING,  // User ID
-        allowNull: false
+        // allowNull: false
     },
     designName: {
         type: datatypes.STRING,
-        allowNull: false
+        // allowNull: false
     },
     designType: {
         type: datatypes.BOOLEAN,
-        allowNull: false
+        // allowNull: false
     },
     designCatagory: {
         type: datatypes.INTEGER
@@ -132,11 +131,8 @@ const design = db.define('orders', {
     color: {
         type: datatypes.STRING
     },
-    imagesAndDetails: {
-        type: datatypes.TEXT,
-    },
-    textAndDetails: {
-        type: datatypes.TEXT,
+    designDetail: {
+        type: datatypes.TEXT
     },
     NumberOfSale: {
         type: datatypes.INTEGER
@@ -150,7 +146,8 @@ Promise.all([
     order.sync({alter: true}),
     orderDetails.sync({alter: true}),
     design.sync({alter: true})
-]).then(() => console.log('Database connected!'));
+]).then(() => console.log('Database connected!'))
+    .catch(err => console.error(err));
 
 module.exports = exports = {
     user,

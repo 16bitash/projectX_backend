@@ -23,7 +23,8 @@ route.put('/:userId', (req, res) => {
         .then(updatedInformation => res.send(updatedInformation));
 });
 
-route.delete('/:userId', (req, res) => {
+route.delete('/:designId', (req, res) => {
+    deleteImagesByDesignId(req.params.designId);
     APIHelperFunctions.deleteRow('designId', req.params.designId).then(deletedDesign => res.send(deletedDesign));
 });
 
@@ -35,6 +36,12 @@ function insertFileNameInDesignAttributes(req) {
         });
         req.body.designAttributes = JSON.stringify(designAttributes);
     }
+}
+
+function deleteImagesByDesignId(designId) {
+    APIHelperFunctions.getSpecificData('designId', designId).then(data => {
+        console.log(data);
+    })
 }
 
 exports.route = route;
