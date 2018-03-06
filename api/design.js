@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const Designs = require('../database/modles').design;
+const Designs = require('../database/modles').designs;
 const DatabaseAPIClass = require('./functions').databaseAPI;
 const APIHelperFunctions = new DatabaseAPIClass(Designs);
 
@@ -14,7 +14,6 @@ route.get('/all', (req, res) => {
 route.post('/', (req, res) => {
     insertFileNameInDesignAttributes(req);
     APIHelperFunctions.addRow(req.body).then(newDesign => res.send(newDesign));
-    res.send('done')
 });
 
 route.put('/:userId', (req, res) => {

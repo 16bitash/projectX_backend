@@ -97,7 +97,7 @@ const orderDetails = db.define('orderDetails', {
     },
     timeOfOrder: {
         type: datatypes.DATE,
-        defaultValue: Sequelize.NOW,
+        defaultValue: Sequelize.NOW
     },
     designId: {
         type: datatypes.INTEGER,
@@ -107,11 +107,11 @@ const orderDetails = db.define('orderDetails', {
     freezeTableName: true
 });
 
-const design = db.define('design', {
+const designs = db.define('designs', {
     designId: {
         type: datatypes.INTEGER,
-        // primaryKey: true,
-        // autoIncrement: true
+        primaryKey: true,
+        autoIncrement: true
     },
     designOwner: {
         type: datatypes.STRING,  // User ID
@@ -131,21 +131,22 @@ const design = db.define('design', {
     color: {
         type: datatypes.STRING
     },
-    designDetail: {
+    designAttributes: {
         type: datatypes.TEXT
     },
     NumberOfSale: {
-        type: datatypes.INTEGER
+        type: datatypes.INTEGER,
+        defaultValue: 0
     },
 }, {
     freezeTableName: true
 });
 
 Promise.all([
-    user.sync({alter: true}),
-    order.sync({alter: true}),
-    orderDetails.sync({alter: true}),
-    design.sync({alter: true})
+    user.sync({force: true}),
+    order.sync({force: true}),
+    orderDetails.sync({force: true}),
+    designs.sync({force: true})
 ]).then(() => console.log('Database connected!'))
     .catch(err => console.error(err));
 
@@ -153,5 +154,5 @@ module.exports = exports = {
     user,
     order,
     orderDetails,
-    design
+    designs
 };

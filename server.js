@@ -4,7 +4,6 @@ const cors = require('cors');
 const multer = require('multer');
 const PORT = require('./config').SERVER.PORT;
 require('./database/modles');  // To make sure database is connected
-require('./api/users');
 
 const profilePicStorage = multer.diskStorage(({
     destination: './public/img/profilePics',
@@ -51,6 +50,8 @@ const routes = {
 const app = express();
 
 app.use(cors());
+
+app.use('/images', express.static(path.join(__dirname, 'public', 'img', 'designImages')));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
