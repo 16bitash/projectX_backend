@@ -108,6 +108,15 @@ const orderDetails = db.define('orderDetails', {
 });
 
 const designs = db.define('designs', {
+    designPrice: {
+        type: datatypes.INTEGER,
+        allowNull: false
+    },
+    sex: {
+        // male, female, uni
+        type: datatypes.STRING,
+        defaultValue: 'uni'
+    },
     designId: {
         type: datatypes.INTEGER,
         primaryKey: true,
@@ -123,6 +132,12 @@ const designs = db.define('designs', {
     },
     designType: {
         type: datatypes.BOOLEAN,
+        defaultValue: false
+        // allowNull: false
+    },
+    topWear: {
+        // 0-tshirt, 1-vneck, 2-hoodie
+        type: datatypes.INTEGER,
         // allowNull: false
     },
     designCatagory: {
