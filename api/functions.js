@@ -7,10 +7,16 @@ class databaseAPI {
         return this.database.findAll();
     }
 
-    getSpecificData(identifierColumnName, identifierValue) {
-        let identifierObj = {};
-        identifierObj[identifierColumnName] = identifierValue;
-        return this.database.findOne({where: identifierObj});
+    getSpecificData(identifierColumnName, identifierValue, obj = {}) {
+        if (obj === {}) {
+            console.log('hiiiiii');
+            let identifierObj = {};
+            identifierObj[identifierColumnName] = identifierValue;
+            return this.database.findOne({where: identifierObj});
+        } else {
+            console.log(this.database.findAndCountAll({where: obj}));
+            return this.database.findAndCountAll({where: obj});
+        }
     }
 
     addRow(Information) {

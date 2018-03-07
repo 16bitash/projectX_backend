@@ -136,7 +136,7 @@ const designs = db.define('designs', {
         // allowNull: false
     },
     topWear: {
-        // 0-tshirt, 1-vneck, 2-hoodie
+        // 0-tshirt, 1-vneck, 2-hoodie, 3-all
         type: datatypes.INTEGER,
         // allowNull: false
     },

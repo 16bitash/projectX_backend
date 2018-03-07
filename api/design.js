@@ -7,6 +7,15 @@ route.get('/', (req, res) => {
     APIHelperFunctions.getSpecificData('designId', req.query.designId).then(data => res.send(data));
 });
 
+route.get('/custom', (req, res) => {
+    obj = {
+        topWear: req.query.topWear,
+        sex: req.query.sex,
+        designCatagory: req.query.designCatagory
+    };
+    APIHelperFunctions.getSpecificData(0, 0, obj).then(data => res.send(data));
+});
+
 route.get('/all', (req, res) => {
     APIHelperFunctions.getAllData().then(allDesigns => res.send(allDesigns));
 });
