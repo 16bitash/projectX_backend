@@ -13,7 +13,7 @@ route.get('/custom', (req, res) => {
         sex: req.query.sex,
         designCatagory: req.query.designCatagory
     };
-    APIHelperFunctions.getSpecificData(0, 0, obj).then(data => res.send(data));
+    APIHelperFunctions.getSpecificData2(obj).then(data => res.send(data));
 });
 
 route.get('/all', (req, res) => {
