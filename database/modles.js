@@ -130,7 +130,7 @@ const designs = db.define('designs', {
         type: datatypes.STRING,
         // allowNull: false
     },
-    designType: {
+    isPopular: {
         type: datatypes.BOOLEAN,
         defaultValue: false
         // allowNull: false
