@@ -3,7 +3,6 @@ const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
 const PORT = require('./config').SERVER.PORT;
-require('./database/modles');  // To make sure database is connected
 
 const profilePicStorage = multer.diskStorage(({
     destination: './public/img/profilePics',

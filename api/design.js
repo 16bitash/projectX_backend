@@ -39,6 +39,7 @@ function insertFileNameInDesignAttributes(req) {
 
 function deleteImagesByDesignId(designId) {
     APIHelperFunctions.getSpecificData('designId', designId).then(data => {
+        // TODO
         console.log(data);
     })
 }
