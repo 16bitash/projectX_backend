@@ -4,11 +4,12 @@ const DatabaseAPIClass = require('./functions').databaseAPI;
 const APIHelperFunctions = new DatabaseAPIClass(Designs);
 
 route.get('/designId', (req, res) => {
-    APIHelperFunctions.getSpecificColumn('designId', req.query.designId).then(data => res.send(data));
+    APIHelperFunctions.getSpecificData('designId', req.query.designId).then(data => res.send(data));
 });
 
 route.get('/search', (req, res) => {
-    APIHelperFunctions.getMultipleColumn(req.query).then(data => res.send(data));
+    console.log(req.query);
+    APIHelperFunctions.getMultipleData(req.query).then(data => res.send(data));
 });
 
 route.get('/all', (req, res) => {

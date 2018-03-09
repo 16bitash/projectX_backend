@@ -7,18 +7,18 @@ class databaseAPI {
         return this.database.findAll();
     }
 
-    getMultipleColumn(searchParameters) {
+    getMultipleData(searchParameters) {
         return this.database.findAndCountAll({where: searchParameters});
     }
 
-    getSpecificColumn(identifierColumnName, identifierValue) {
+    getSpecificData(identifierColumnName, identifierValue) {
         let identifierObj = {};
         identifierObj[identifierColumnName] = identifierValue;
         return this.database.findOne({where: identifierObj});
     }
 
-    addRow(Information) {
-        return this.database.create(Information);
+    addRow(newRowInformation) {
+        return this.database.create(newRowInformation);
     }
 
     updateRow(identifierColumnName, identifierValue, newInformation) {

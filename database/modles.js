@@ -137,11 +137,11 @@ const designs = db.define('designs', {
     },
     topWear: {
         // 0-tshirt, 1-vneck, 2-hoodie, 3-all
-        type: datatypes.INTEGER,
+        type: datatypes.STRING,
         // allowNull: false
     },
     designCatagory: {
-        type: datatypes.INTEGER
+        type: datatypes.STRING
     },
     color: {
         type: datatypes.STRING
@@ -158,10 +158,10 @@ const designs = db.define('designs', {
 });
 
 Promise.all([
-    user.sync({force: true}),
-    order.sync({force: true}),
-    orderDetails.sync({force: true}),
-    designs.sync({force: true})
+    user.sync({alter: true}),
+    order.sync({alter: true}),
+    orderDetails.sync({alter: true}),
+    designs.sync({alter: true})
 ]).then(() => console.log('Database connected!'))
     .catch(err => console.error(err));
 
