@@ -7,6 +7,10 @@ class databaseAPI {
         return this.database.findAll();
     }
 
+    getSpecificData2(obj) {
+        return this.database.findAndCountAll({where: obj});
+    }
+
     getSpecificData(identifierColumnName, identifierValue) {
         let identifierObj = {};
         identifierObj[identifierColumnName] = identifierValue;
