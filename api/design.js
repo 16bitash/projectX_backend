@@ -3,17 +3,12 @@ const Designs = require('../database/modles').designs;
 const DatabaseAPIClass = require('./functions').databaseAPI;
 const APIHelperFunctions = new DatabaseAPIClass(Designs);
 
-route.get('/', (req, res) => {
-    APIHelperFunctions.getSpecificData('designId', req.query.designId).then(data => res.send(data));
+route.get('/designId', (req, res) => {
+    APIHelperFunctions.getSpecificColumn('designId', req.query.designId).then(data => res.send(data));
 });
 
-route.get('/custom', (req, res) => {
-    obj = {
-        topWear: req.query.topWear,
-        sex: req.query.sex,
-        designCatagory: req.query.designCatagory
-    };
-    APIHelperFunctions.getSpecificData2(obj).then(data => res.send(data));
+route.get('/search', (req, res) => {
+    APIHelperFunctions.getMultipleColumn(req.query).then(data => res.send(data));
 });
 
 route.get('/all', (req, res) => {
@@ -47,7 +42,7 @@ function insertFileNameInDesignAttributes(req) {
 }
 
 function deleteImagesByDesignId(designId) {
-    APIHelperFunctions.getSpecificData('designId', designId).then(data => {
+    APIHelperFunctions.getSpecificColumn('designId', designId).then(data => {
         // TODO
         console.log(data);
     })

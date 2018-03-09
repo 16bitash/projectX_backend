@@ -7,11 +7,11 @@ class databaseAPI {
         return this.database.findAll();
     }
 
-    getSpecificData2(obj) {
-        return this.database.findAndCountAll({where: obj});
+    getMultipleColumn(searchParameters) {
+        return this.database.findAndCountAll({where: searchParameters});
     }
 
-    getSpecificData(identifierColumnName, identifierValue) {
+    getSpecificColumn(identifierColumnName, identifierValue) {
         let identifierObj = {};
         identifierObj[identifierColumnName] = identifierValue;
         return this.database.findOne({where: identifierObj});
