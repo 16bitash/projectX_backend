@@ -5,7 +5,7 @@ const datatypes = Sequelize.DataTypes;
 const db = new Sequelize(DB.DATABASE, DB.USER, DB.PASSWORD, {
     host: DB.HOST,
     dialect: DB.DIALECT,
-    // logging: false
+    logging: false
 });
 
 const user = db.define('users', {
@@ -155,10 +155,10 @@ const design = db.define('orders', {
 });
 
 Promise.all([
-    user.sync({alter: false, force: false}),
-    order.sync(),
-    orderDetails.sync(),
-    design.sync()
+    user.sync({force: true}),
+    order.sync({force: true}),
+    orderDetails.sync({force: true}),
+    design.sync({force: true})
 ]).then(() => console.log('Database connected!'));
 
 module.exports = exports = {

@@ -6,11 +6,9 @@ const cors = require('cors');
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
-const passportLocalSetup = require('./auth/local');
-const passportGoogleSetup = require('./auth/google');
-const passportFbSetup = require('./auth/fb');
-require('./database/modles');  // To make sure database is connected
-require('./api/users');
+require('./auth/local');
+require('./auth/google');
+require('./auth/fb');
 
 const app = express();
 

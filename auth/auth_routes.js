@@ -5,7 +5,6 @@ const User = require('../database/modles').user;
 const DatabaseAPIClass = require('../api/functions').databaseAPI;
 const APIHelperFunctions = new DatabaseAPIClass(User);
 
-
 route.get('/login', (req, res) => {
     res.render('login')
 });
