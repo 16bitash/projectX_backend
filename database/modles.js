@@ -5,7 +5,7 @@ const datatypes = Sequelize.DataTypes;
 const db = new Sequelize(DB.DATABASE, DB.USER, DB.PASSWORD, {
     host: DB.HOST,
     dialect: DB.DIALECT,
-    // logging: false
+    logging: false
 });
 
 const user = db.define('users', {
@@ -14,29 +14,38 @@ const user = db.define('users', {
         primaryKey: true,
         autoIncrement: true
     },
-    name: {
+    googleId: {
+        type: datatypes.STRING,
+        allowNull: true
+    },
+    fbId: {
+        type: datatypes.STRING,
+        allowNull: true
+    },
+    userName: {
         type: datatypes.STRING,
         allowNull: false,
+        unique: true
+    },
+    phone: {
+        type: datatypes.STRING,
+        allowNull: true,
     },
     profilePic: {
         type: datatypes.STRING
-    },
-    phone: {
-        type: datatypes.BIGINT,
-        unique: true,
-        allowNull: false
     },
     email: {
         type: datatypes.STRING,
         unique: true
     },
     about: {
-        type: datatypes.TEXT
+        type: datatypes.TEXT,
+        allowNull: true
     },
     password: {
         // Implement Hashing
         type: datatypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     address: {
         type: datatypes.STRING
@@ -158,12 +167,11 @@ const designs = db.define('designs', {
 });
 
 Promise.all([
-    user.sync({alter: true}),
-    order.sync({alter: true}),
-    orderDetails.sync({alter: true}),
-    designs.sync({alter: true})
-]).then(() => console.log('Database connected!'))
-    .catch(err => console.error(err));
+    user.sync({force: true}),
+    order.sync({force: true}),
+    orderDetails.sync({force: true}),
+    designs.sync({force: true})
+]).then(() => console.log('Database connected!'));
 
 module.exports = exports = {
     user,

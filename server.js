@@ -1,8 +1,14 @@
-const express = require('express');
 const path = require('path');
-const cors = require('cors');
-const multer = require('multer');
 const PORT = require('./config').SERVER.PORT;
+const CookieKey = require('./auth/_config').keys.CookieKey;
+const multer = require('multer');
+const cors = require('cors');
+const express = require('express');
+const session = require('express-session');
+const passport = require('passport');
+require('./auth/local');
+require('./auth/google');
+require('./auth/facebook');
 
 const profilePicStorage = multer.diskStorage(({
     destination: './public/img/profilePics',
@@ -26,6 +32,12 @@ const uploadDesignImage = multer({
     fileFilter: checkFileType
 }).array('designImage');
 
+const routes = {
+    users: require('./api/users').route,
+    auth: require('./auth/auth_routes').route,
+    designs: require('./api/design').route
+};
+
 function nameThatBitch(req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
 }
@@ -40,11 +52,6 @@ function checkFileType(req, file, cb) {
         cb('Err: Image Only', false);
     }
 }
-
-const routes = {
-    users: require('./api/users').route,
-    designs: require('./api/design').route
-};
 
 const app = express();
 
@@ -83,6 +90,14 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(session({
+    secret: CookieKey,
+    cookie: {maxAge: 7 * 24 * 60 * 60 * 1000}
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/auth', routes.auth);
 app.use('/users', routes.users);
 app.use('/designs', routes.designs);
 

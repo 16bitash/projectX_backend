@@ -1,0 +1,11 @@
+# Preparing the Database
+
+Do the following as root
+
+```sql
+ create database onedb;
+ create user userone identified by 'passone';
+ use dbone;
+ grant all privileges on dbone to userone;
+ grant all privileges on dbone.* to userone;
+```
