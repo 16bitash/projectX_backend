@@ -1,3 +1,4 @@
+const route = require('express').Router();
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 const config = require('./_config').ids;
@@ -10,14 +11,15 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (userid, done) {
-    APIHelperFunctions.getSpecificData('userId', userid).then((user) => {
+    APIHelperFunctions.getSpecificData('userId', userid).then(user => {
         if (!user) {
             return done(new Error("no such user"))
         }
         done(null, user)
-    }).catch((err) => {
-        done(err)
     })
+        .catch(err => {
+            done(err)
+        })
 });
 
 passport.use(new GoogleStrategy({
@@ -31,26 +33,18 @@ passport.use(new GoogleStrategy({
         profileInfo.googleId = profile.id;
         profileInfo.userName = profile.displayName;
         profileInfo.profilePic = profile.photos ? profile.photos[0].value : 'no pic uploaded';
-        if (profile.emails !== undefined) {
+        if (profile.emails) {
             profileInfo.email = profile.emails[0].value;
         }
         profileInfo.about = profile._json.tagline;
         console.log("************************");
         APIHelperFunctions.getSpecificData('googleId', profileInfo.googleId)
-            .then((currentUser) => {
+            .then(currentUser => {
                 if (currentUser) {
-                    // means we already have a account linked with google
-                    console.log("already linked with:");
-                    console.log(currentUser);
                     done(null, currentUser);
                 } else {
-                    // means we will now save this account
-                    console.log("creating new record");
-                    //we haven't saved phoneNumber and password yet
                     APIHelperFunctions.addRow(profileInfo)
-                        .then((newUser) => {
-                            console.log('newUser created is: ');
-                            console.log(newUser);
+                        .then(newUser => {
                             done(null, newUser);
                         });
                 }
@@ -59,4 +53,12 @@ passport.use(new GoogleStrategy({
     }
 ));
 
-exports = module.exports = GoogleStrategy;
+route.get('/', passport.authenticate('google', {scope: config.google.scope}));
+route.get('/redirect', passport.authenticate('google'),
+    (req, res) => {
+        res.redirect('/profile')
+    });
+
+exports = module.exports = {
+    route
+};

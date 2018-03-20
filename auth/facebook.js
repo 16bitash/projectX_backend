@@ -1,3 +1,4 @@
+const route = require('express').Router();
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook');
 const config = require('./_config').ids;
@@ -6,7 +7,7 @@ const DatabaseAPIClass = require('../api/functions').databaseAPI;
 const APIHelperFunctions = new DatabaseAPIClass(User);
 
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser((user, done) => {
     done(null, user.userId)
 });
 
@@ -14,12 +15,13 @@ passport.deserializeUser(function (userid, done) {
     APIHelperFunctions.getSpecificData('userId', userid)
         .then((user) => {
             if (!user) {
-                return done(new Error("no such user"))
+                done(new Error("no such user"))
             }
             done(null, user)
-        }).catch((err) => {
-        done(err)
-    })
+        })
+        .catch((err) => {
+            done(err)
+        })
 });
 
 passport.use(new FacebookStrategy({
@@ -60,4 +62,14 @@ passport.use(new FacebookStrategy({
     }
 ));
 
-exports = module.exports = FacebookStrategy;
+route.get('/', passport.authenticate('facebook'));
+
+route.get('/redirect', passport.authenticate('facebook', {scope: config.facebook.scope}),
+    (req, res) => {
+        // res.send(req.user);
+        res.redirect('/profile')
+    });
+
+exports = module.exports = {
+    route
+};

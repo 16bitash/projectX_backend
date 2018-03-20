@@ -8,7 +8,7 @@ const session = require('express-session');
 const passport = require('passport');
 require('./auth/local');
 require('./auth/google');
-require('./auth/fb');
+require('./auth/facebook');
 
 const app = express();
 
@@ -27,7 +27,7 @@ const upload = multer({
 
 const routes = {
     users: require('./api/users').route,
-    profile: require('./api/profile')
+    auth: require('./auth/auth_routes').route
 };
 
 function checkFileType(file, cb) {
@@ -64,8 +64,7 @@ app.use(passport.session());
 
 app.set("view engine", "hbs");
 
-app.use('/auth', require('./auth/auth_routes'));
-app.use('/profile', routes.profile);
+app.use('/auth', routes.auth);
 app.use('/users', routes.users);
 
 app.listen(PORT, () => {
