@@ -4,7 +4,7 @@ const DatabaseAPIClass = require('./functions').databaseAPI;
 const APIHelperFunctions = new DatabaseAPIClass(Users);
 
 route.get('/', (req, res) => {
-    APIHelperFunctions.getSpecificColumn('userId', req.query.userId).then(data => res.send(data));
+    APIHelperFunctions.getSpecificData('userId', req.query.userId).then(data => res.send(data));
 });
 
 route.get('/all', (req, res) => {

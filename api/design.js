@@ -21,7 +21,7 @@ route.post('/', (req, res) => {
     APIHelperFunctions.addRow(req.body).then(newDesign => res.send(newDesign));
 });
 
-route.put('/:userId', (req, res) => {
+route.put('/:designId', (req, res) => {
     insertFileNameInDesignAttributes(req);
     APIHelperFunctions.updateRow('designId', req.params.designId, req.body)
         .then(updatedInformation => res.send(updatedInformation));
@@ -45,7 +45,6 @@ function insertFileNameInDesignAttributes(req) {
 function deleteImagesByDesignId(designId) {
     APIHelperFunctions.getSpecificColumn('designId', designId).then(data => {
         // TODO
-        console.log(data);
     })
 }
 

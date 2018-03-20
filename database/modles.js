@@ -61,6 +61,10 @@ const user = db.define('users', {
     isPopular: {
         type: datatypes.BOOLEAN,
         defaultValue: false
+    },
+    isBlocked: {
+        type: datatypes.BOOLEAN,
+        defaultValue: false
     }
 }, {
     freezeTableName: true
