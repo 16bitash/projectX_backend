@@ -43,7 +43,7 @@ function nameThatBitch(req, file, cb) {
 }
 
 function checkFileType(req, file, cb) {
-    const allowedFileTypes = /jpeg|jpg|png|gif/i;
+    const allowedFileTypes = /jpeg|jpg|png|svg/i;
     const isExtensionValid = allowedFileTypes.test(path.extname(file.originalname));
     const isMimeValid = allowedFileTypes.test(file.mimetype);
     if (isExtensionValid && isMimeValid) {

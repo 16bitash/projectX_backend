@@ -171,10 +171,10 @@ const designs = db.define('designs', {
 });
 
 Promise.all([
-    user.sync({force: true}),
-    order.sync({force: true}),
-    orderDetails.sync({force: true}),
-    designs.sync({force: true})
+    user.sync({alter: true}),
+    order.sync({alter: true}),
+    orderDetails.sync({alter: true}),
+    designs.sync({alter: true})
 ]).then(() => console.log('Database connected!'));
 
 module.exports = exports = {
